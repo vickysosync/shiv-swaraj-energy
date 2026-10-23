@@ -65,11 +65,11 @@ export function CrudEditor<T extends Row>({ title, items, fields, onChange, blan
   const [del, setDel] = useState<T | null>(null);
   const [q, setQ] = useState("");
   const [error, setError] = useState("");
-  const shown = items.filter((i) => String(i.title ?? "").toLowerCase().includes(q.toLowerCase()));
+  const shown = items.filter((i) => String(i["title"] ?? "").toLowerCase().includes(q.toLowerCase()));
 
   function save() {
     if (!editing) return;
-    if (!String(editing.title ?? "").trim()) return setError("Title is required.");
+    if (!String(editing["title"] ?? "").trim()) return setError("Title is required.");
     const clean = { ...editing } as Record<string, unknown>;
     for (const f of fields) if (f.type === "list") clean[f.key] = ((clean[f.key] as string[]) ?? []).map((s) => s.trim()).filter(Boolean);
     const next = clean as T;
@@ -89,9 +89,9 @@ export function CrudEditor<T extends Row>({ title, items, fields, onChange, blan
             <tbody>
               {shown.map((i) => (
                 <tr key={i.id} className="border-b last:border-0">
-                  <td className="py-3 pr-3"><Img src={String(i.image ?? "")} alt="" className="h-12 w-16 rounded-sm" /></td>
-                  <td className="py-3 pr-3 font-medium text-navy">{String(i.title)}</td>
-                  <td className="py-3 pr-3 text-muted-foreground">{String(i.category ?? i.slug ?? "—")}</td>
+                  <td className="py-3 pr-3"><Img src={String(i["image"] ?? "")} alt="" className="h-12 w-16 rounded-sm" /></td>
+                  <td className="py-3 pr-3 font-medium text-navy">{String(i["title"])}</td>
+                  <td className="py-3 pr-3 text-muted-foreground">{String(i["category"] ?? i["slug"] ?? "—")}</td>
                   {toggleKey && (
                     <td className="py-3 pr-3">
                       <button onClick={() => onChange(items.map((x) => (x.id === i.id ? { ...x, [toggleKey]: !x[toggleKey] } : x)))} className={`rounded-sm px-2 py-1 text-xs font-semibold ${i[toggleKey] ? "bg-success/15 text-success" : "bg-muted text-muted-foreground"}`}>
@@ -124,7 +124,7 @@ export function CrudEditor<T extends Row>({ title, items, fields, onChange, blan
           </div>
         )}
       </Modal>
-      <Confirm open={!!del} title="Delete item?" text={`"${String(del?.title ?? "")}" will be permanently removed.`} onCancel={() => setDel(null)} onConfirm={() => { if (del) onChange(items.filter((x) => x.id !== del.id)); setDel(null); }} />
+      <Confirm open={!!del} title="Delete item?" text={`"${String(del?.["title"] ?? "")}" will be permanently removed.`} onCancel={() => setDel(null)} onConfirm={() => { if (del) onChange(items.filter((x) => x.id !== del.id)); setDel(null); }} />
     </Panel>
   );
 }

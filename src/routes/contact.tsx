@@ -5,8 +5,8 @@ import { IMAGES, newId, updateData, useData, validateEnquiry, type EnquiryInput 
 import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/contact")({
-  validateSearch: (s: Record<string, unknown>): { service?: string } => ({
-    service: typeof s.service === "string" ? s.service.slice(0, 80) : undefined,
+  validateSearch: (s: Record<string, unknown>): { service?: string | undefined } => ({
+    service: typeof s["service"] === "string" ? s["service"].slice(0, 80) : undefined,
   }),
   head: () => seo("Contact Us", "Contact Shiv Swaraj Technology Private Limited, Bhosari Industrial Area, Pune. Call 3412341325 or email shivswaraj@gmail.com."),
   component: Contact,
